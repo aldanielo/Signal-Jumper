@@ -1559,9 +1559,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platformPrefab: {fileID: 5513941394351207040, guid: a19ee5b3535ac4d4ba07ad1f7b8c04d2, type: 3}
+  cookiePrefab: {fileID: 6592501771462042919, guid: 0cb59d0cf41cb5c4eb9618a0bed39e20, type: 3}
   spawnInterval: 2
   spawnYPosition: 10
-  platformSpeed: 1
+  platformSpeed: 1.5
+  cookieSpawnChance: 0.1
 --- !u!4 &1558751574
 Transform:
   m_ObjectHideFlags: 0

@@ -35,7 +35,8 @@ public class PlatformMover : MonoBehaviour
             //    Destroy(gameObject); // Destroys platform after hit
             switch (platformType)
             {
-                case PlatformType.Speed:
+                case PlatformType.Bonus:
+                case PlatformType.Speed:        
                 case PlatformType.Safe:
                     GameManager.instance.AddScore(); // Add score
                     Debug.Log("Safe platform hit!");
@@ -45,7 +46,6 @@ public class PlatformMover : MonoBehaviour
                     GameManager.instance.RemoveScore();
                     Debug.Log("Danger platform hit!");
                     break;
-
             }
 
             if (platformType == PlatformType.Speed)

@@ -6,9 +6,11 @@ public class PlatformSpawner : MonoBehaviour
 {
     public enum PlatformType { Safe, Danger, Speed, Bonus }
     public GameObject platformPrefab; // Assign your platform prefab
+    public GameObject cookiePrefab; // Assign your cookie prefab
     public float spawnInterval = 1.5f; // Time between platform spawns
     public float spawnYPosition = 10f; // Y position where platforms spawn
     public float platformSpeed = 2f; // Speed at which platforms move downwards
+    public float cookieSpawnChance = 0.1f; // Chance to spawn a cookie
     private float spawnXPositionLeft = -12f;
     private float spawnXPositionRight = 8f;
 
@@ -17,7 +19,7 @@ public class PlatformSpawner : MonoBehaviour
         // Start spawning platforms
         StartCoroutine(SpawnPlatforms());
     }
- 
+
     private IEnumerator SpawnPlatforms()
     {
         while (true)
@@ -27,8 +29,6 @@ public class PlatformSpawner : MonoBehaviour
         }
     }
 
-
-
     private void SpawnPlatform()
     {
         // Instantiate platform at the top of the screen
@@ -36,7 +36,7 @@ public class PlatformSpawner : MonoBehaviour
         GameObject platform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
 
         // Randomly select platform type
-        PlatformType platformType = (PlatformType)Random.Range(0, 3);
+        PlatformType platformType = (PlatformType)Random.Range(0, 4);
 
         // Assign platform type and behavior
         PlatformMover platformScript = platform.AddComponent<PlatformMover>();
@@ -56,6 +56,16 @@ public class PlatformSpawner : MonoBehaviour
             case PlatformType.Speed:
                 platformRenderer.material.color = Color.green;
                 break;
+            case PlatformType.Bonus:
+                platformRenderer.material.color = Color.yellow; // Changed to yellow for bonus
+                break;
+        }
+
+        // Randomly spawn a cookie
+        if (Random.value < cookieSpawnChance)
+        {
+            Vector3 cookieSpawnPosition = new Vector3(platform.transform.position.x, platform.transform.position.y + 0.5f,platform.transform.position.z);
+            Instantiate(cookiePrefab, cookieSpawnPosition, Quaternion.identity);
         }
     }
 }

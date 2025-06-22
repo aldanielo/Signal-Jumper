@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
     private int score = 0;
+    private float scoreMultiplier = 1;
+    private float scoreMultiplierTimer = 0f;
 
 
 
@@ -33,18 +35,27 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if (scoreMultiplierTimer > 0f)
+        {
+            scoreMultiplierTimer -= Time.deltaTime;
+            if (scoreMultiplierTimer <= 0f)
+            {
+                scoreMultiplier = 1f;
+            }
+        }
+    }
+
+
+
     public void AddScore()
     {
-        score += 1;
+        score += (int)scoreMultiplier;
+        //score += 1;
         scoreText.text = "Score: " + score.ToString();
-
-        // Add the platform.speed to x2 in points
-        if (platformTyp.platformType == PlatformSpawner.PlatformType.Speed)
-        {
-            score += 2;
-        }
-        
     }
+
 
     public void ResetScore()
     {
@@ -76,20 +87,23 @@ public class GameManager : MonoBehaviour
     {
         score --; // Decrease score
         scoreText.text = "Score: " + score.ToString(); // Update score text
-        /*
-        if (score > 0)
-        {
-            score--; // Decrease score
-            scoreText.text = "Score: " + score.ToString(); // Update score text
-        }*/
 
         if (score < 0)
         {
-           /* score = 0; // Ensure score doesn't go below 0
-            scoreText.text = "Score: " + score.ToString(); */
             GameOver();
         }
+    }
 
 
+    public void ActivateScoreMultiplier(float multiplier, float duration)
+    {
+        scoreMultiplier = multiplier;
+        scoreMultiplierTimer = duration;
+    }
+
+
+    private void DeactivateScoreMultiplier()
+    {
+        scoreMultiplier = 1;
     }
 }
