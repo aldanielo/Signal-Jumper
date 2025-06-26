@@ -6,13 +6,18 @@ public class PlatformSpawner : MonoBehaviour
 {
     public enum PlatformType { Safe, Danger, Speed, Bonus }
     public GameObject platformPrefab; // Assign your platform prefab
-    public GameObject cookiePrefab; // Assign your cookie prefab
+    public GameObject bonusPrefab; // Assign your cookie prefab
     public float spawnInterval = 1.5f; // Time between platform spawns
     public float spawnYPosition = 10f; // Y position where platforms spawn
     public float platformSpeed = 2f; // Speed at which platforms move downwards
-    public float cookieSpawnChance = 0.1f; // Chance to spawn a cookie
+    public float bonusSpawnChance = 0.1f; // Chance to spawn a cookie
     private float spawnXPositionLeft = -12f;
     private float spawnXPositionRight = 8f;
+
+    public GameObject blastPrefab; // Assign your blast prefab
+    public float blastSpawnChance = 0.05f; // Chance to spawn a blast
+
+
 
     private void Start()
     {
@@ -62,10 +67,22 @@ public class PlatformSpawner : MonoBehaviour
         }
 
         // Randomly spawn a cookie
-        if (Random.value < cookieSpawnChance)
+
+        bool bonusSpawned = false;
+        if (Random.value < bonusSpawnChance)
         {
             Vector3 cookieSpawnPosition = new Vector3(platform.transform.position.x, platform.transform.position.y + 0.5f,platform.transform.position.z);
-            Instantiate(cookiePrefab, cookieSpawnPosition, Quaternion.identity);
+            Instantiate(bonusPrefab, cookieSpawnPosition, Quaternion.identity);
+
+            bonusSpawned = true;
         }
+
+        // Randomly spawn a blast
+        if (!bonusSpawned && Random.value < blastSpawnChance)
+        {
+            Vector3 blastSpawnPosition = new Vector3(platform.transform.position.x, platform.transform.position.y + 0.5f, platform.transform.position.z);
+            Instantiate(blastPrefab, blastSpawnPosition, Quaternion.identity);
+        }
+
     }
 }

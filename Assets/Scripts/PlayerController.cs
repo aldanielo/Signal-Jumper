@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float upwardForce = 10f;
-    public float sideSpeed = 5f;
+    public float upwardForce = 1f;
+    public float sideSpeed = 1f;
     private Rigidbody rb;
 
     void Start()
@@ -37,7 +37,19 @@ public class PlayerController : MonoBehaviour
 
         if (transform.position.y < -12f)
         {
-            GameManager.instance.GameOver();
+            RespawnPlayer();
         }
     }
+
+
+    void RespawnPlayer()
+    {
+        // Deduct points
+        GameManager.instance.DeductScore(5);
+
+        // Respawn the player at a safe height
+        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+        rb.velocity = Vector3.zero;
+    }
+
 }
