@@ -1353,6 +1353,24 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: Bounce
+    clip: {fileID: 8300000, guid: a86dcafee0b3dd94890e2cc6ad9c15c0, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Bonus
+    clip: {fileID: 8300000, guid: 84c6d2eb9d8154745861addb875570f3, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Blast
+    clip: {fileID: 8300000, guid: 9e9e6d3d68f35014886ea4d2cab412f4, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &1465458426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1739,6 +1757,7 @@ MonoBehaviour:
   restartButton: {fileID: 141012537}
   playButton: {fileID: 1569248194}
   scoreText: {fileID: 1501162828}
+  currentLevel: 
 --- !u!1 &1569248192
 GameObject:
   m_ObjectHideFlags: 0
@@ -2118,10 +2137,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5749102692519217074
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831753365450432482, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4514123515663715423, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
+      propertyPath: m_Name
+      value: LevelLoader
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5886abd72a696b74783ec58b9bf3687a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 5749102692519217074}
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 1083410817}

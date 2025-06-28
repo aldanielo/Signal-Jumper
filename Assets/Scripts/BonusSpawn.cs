@@ -9,6 +9,7 @@ public class BonusSpawn : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        AudioManager.instance.Play("Bonus");
         if (collision.gameObject.CompareTag("Player"))
         {
             GameManager.instance.ActivateScoreMultiplier(multiplier, duration);

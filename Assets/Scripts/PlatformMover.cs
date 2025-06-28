@@ -27,6 +27,8 @@ public class PlatformMover : MonoBehaviour
     // You can add additional behavior for each platform type here
     private void OnCollisionEnter(Collision collision)
     {
+        AudioManager.instance.Play("Bounce");
+
         // Check if the ball collided with this platform
         if (collision.gameObject.CompareTag("Player") && !hasBeenHit)
         {
@@ -39,18 +41,18 @@ public class PlatformMover : MonoBehaviour
                 case PlatformType.Speed:        
                 case PlatformType.Safe:
                     GameManager.instance.AddScore(); // Add score
-                    Debug.Log("Safe platform hit!");
+                    //Debug.Log("Safe platform hit!");
                     break;
                 case PlatformType.Danger:
                     // Apply damage or penalty
                     GameManager.instance.RemoveScore();
-                    Debug.Log("Danger platform hit!");
+                    //Debug.Log("Danger platform hit!");
                     break;
             }
 
             if (platformType == PlatformType.Speed)
             {
-                Debug.Log("Speed platform hit!");
+               // Debug.Log("Speed platform hit!");
                 collision.gameObject.GetComponent<Rigidbody>().velocity *= 1.5f;
             }
         }

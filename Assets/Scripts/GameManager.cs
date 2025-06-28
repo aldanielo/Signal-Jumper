@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     public static bool isRestarted = false;
 
+    public string currentLevel;
+
 
 
 
@@ -31,6 +33,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -40,7 +43,17 @@ public class GameManager : MonoBehaviour
 
         //restartButton = GetComponent<Button>();
         restartButton.onClick.AddListener(RestartGame);
-        score = GetLastScore(); // Load the last score
+
+        if (isRestarted)
+        {
+            score = 0;
+            isRestarted = true;
+        }
+        else
+        {
+            score = GetLastScore(); // Load the last score
+        }
+        
         scoreText.text = "Score: " + score.ToString();
 
     }
@@ -93,15 +106,6 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        Time.timeScale = 1f; // Resume game time
-        playButton.gameObject.SetActive(false); // Hide Play button
-
-        // switch music again
-        /*if (AudioManager.instance != null)
-        {
-            AudioManager.instance.Stop("Theme");
-            AudioManager.instance.Play("Background");
-        }*/
 
         Time.timeScale = 1f; // Resume game time
         playButton.gameObject.SetActive(false); // Hide Play button
@@ -129,21 +133,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        /*
-        SaveScore(score);
+
+        SaveScore(score); 
         // Stop the game
-        Time.timeScale = 0f;
-
-        // Optionally, reload the scene or show a game over screen
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        Debug.Log("Game Over!");
-
-        AudioManager.instance.Play("Game Over");
-
-        restartButton.gameObject.SetActive(true); // Show the restart button
-
-        */
-        SaveScore(score); // Stop the game
         Time.timeScale = 0f;
         Debug.Log("Game Over!");
         AudioManager.instance.Play("Game Over");
@@ -158,11 +150,10 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        /*
-        isRestarted = true;
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        // AudioManager.instance.Stop("Background"); */
+        /*PlayerPrefs.SetInt("Score", 0);
+        score = 0;
+        scoreText.text = "Score: 0";
+        */
 
         isRestarted = true;
         Time.timeScale = 1f;
@@ -171,6 +162,7 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.Stop("Theme");
             AudioManager.instance.Play("Background");
         }
+        ResetScore();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
     }
@@ -245,6 +237,14 @@ public class GameManager : MonoBehaviour
     public int GetLastLevel()
     {
         return PlayerPrefs.GetInt(LAST_LEVEL_KEY, 1); // Default to level 1
+    }
+
+    public void LoadNextLevel()
+    {
+        // Load the next level
+        string nextLevel = "Level " + (int.Parse(currentLevel.Split(' ')[1]) + 1);
+        SceneManager.LoadSceneAsync(nextLevel);
+        PlayerPrefs.SetString("CurrentLevel", nextLevel);
     }
 
 }

@@ -29,6 +29,11 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector3.right * sideSpeed, ForceMode.Impulse);
         }
+
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            rb.AddForce(Vector3.down * sideSpeed, ForceMode.Impulse);
+        }
     }
 
     void FixedUpdate()

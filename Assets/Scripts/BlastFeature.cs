@@ -8,6 +8,7 @@ public class BlastFeature : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        AudioManager.instance.Play("Blast");
         if (collision.gameObject.CompareTag("Player"))
         {
             GameManager.instance.DeductScore(pointsToDeduct);
