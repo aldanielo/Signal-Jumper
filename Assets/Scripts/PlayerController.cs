@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
     public float upwardForce = 1f;
     public float sideSpeed = 1f;
     private Rigidbody rb;
+    public int points = 5;
+
+    public bool isRespawning = false;
+    int delay = 2;
 
     void Start()
     {
@@ -38,23 +42,45 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.velocity *= 0.99f; // Damping
-
-        if (transform.position.y < -12f)
+        if (!isRespawning)
         {
-            RespawnPlayer();
+            rb.velocity *= 0.99f; // Damping
+        }
+        
+
+        if (transform.position.y < -12f && !isRespawning)
+        {
+            StartCoroutine(ReSpawnAfterDelay(delay));
         }
     }
 
-
+    /*
     void RespawnPlayer()
     {
         // Deduct points
-        GameManager.instance.DeductScore(5);
+        GameManager.instance.DeductScore(points);
 
         // Respawn the player at a safe height
         transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
         rb.velocity = Vector3.zero;
+    }*/
+
+    IEnumerator ReSpawnAfterDelay(float delay)
+    {
+        isRespawning = true;
+        // Optional: hide the ball or disable controls here
+        rb.velocity = Vector3.zero;
+
+        GameManager.instance.DeductScore(points);
+
+        yield return new WaitForSeconds(delay);
+
+        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+        rb.velocity = Vector3.zero;
+
+        isRespawning = false;
+
+        // Optional: re-enable visuals or input here
     }
 
 }

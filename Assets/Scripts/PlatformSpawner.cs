@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlatformSpawner : MonoBehaviour
 {
@@ -34,6 +35,15 @@ public class PlatformSpawner : MonoBehaviour
         }
     }
 
+    private Dictionary<string, Color[]> levelColors = new Dictionary<string, Color[]>()
+    { 
+    {"Level 1", new Color[] {Color.blue, Color.red, Color.green, Color.yellow}},
+    {"Level 2", new Color[] {Color.cyan, Color.gray, Color.black, Color.white}},
+    // Add more levels here...
+    };
+
+
+
     private void SpawnPlatform()
     {
         // Instantiate platform at the top of the screen
@@ -50,6 +60,19 @@ public class PlatformSpawner : MonoBehaviour
 
         // Set platform color based on type
         Renderer platformRenderer = platform.GetComponent<Renderer>();
+
+        string currentLevel = SceneManager.GetActiveScene().name;
+        if (levelColors.ContainsKey(currentLevel))
+        {
+            Color[] colors = levelColors[currentLevel];
+            platformRenderer.material.color = colors[(int)platformType];
+        }
+        else
+        {
+            Debug.LogError("No colors defined for level " + currentLevel);
+        }
+
+        /*
         switch (platformType)
         {
             case PlatformType.Safe:
@@ -65,6 +88,8 @@ public class PlatformSpawner : MonoBehaviour
                 platformRenderer.material.color = Color.yellow; // Changed to yellow for bonus
                 break;
         }
+
+        */
 
         // Randomly spawn a cookie
 

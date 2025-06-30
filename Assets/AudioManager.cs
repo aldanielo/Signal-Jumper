@@ -13,7 +13,6 @@ public class AudioManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject); // keep between scenes
         }
         else
         {
@@ -21,7 +20,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-
+        DontDestroyOnLoad(gameObject); // keep between scenes
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
