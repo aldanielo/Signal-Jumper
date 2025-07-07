@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8638733286027794465}
   - component: {fileID: 36662041927649495}
   m_Layer: 0
-  m_Name: Game
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,3 +69,7 @@ MonoBehaviour:
   playButton: {fileID: 0}
   scoreText: {fileID: 0}
   currentLevel: 
+  requiredTime: 20
+  requiredScore: 30
+  bar: {fileID: 0}
+  currentScore: 0

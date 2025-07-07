@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BonusSpawn : MonoBehaviour
 {
-    public float multiplier = 2f;
-    public float duration = 5f;
+    public float multiplier = 3f;
+    public float duration = 10f;
 
     private void OnCollisionEnter(Collision collision)
     {

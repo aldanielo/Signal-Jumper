@@ -11,7 +11,7 @@ public class BlastFeature : MonoBehaviour
         AudioManager.instance.Play("Blast");
         if (collision.gameObject.CompareTag("Player"))
         {
-            GameManager.instance.DeductScore(pointsToDeduct);
+            GameManager.instance.RemoveScore(pointsToDeduct);
             Destroy(gameObject);
         }
     }

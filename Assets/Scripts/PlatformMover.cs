@@ -45,7 +45,7 @@ public class PlatformMover : MonoBehaviour
                     break;
                 case PlatformType.Danger:
                     // Apply damage or penalty
-                    GameManager.instance.RemoveScore();
+                    GameManager.instance.RemoveScore(5);
                     //Debug.Log("Danger platform hit!");
                     break;
             }

@@ -54,16 +54,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*
+    
     void RespawnPlayer()
     {
         // Deduct points
-        GameManager.instance.DeductScore(points);
+        GameManager.instance.RemoveScore(points);
 
         // Respawn the player at a safe height
         transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
         rb.velocity = Vector3.zero;
-    }*/
+    }
 
     IEnumerator ReSpawnAfterDelay(float delay)
     {
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         // Optional: hide the ball or disable controls here
         rb.velocity = Vector3.zero;
 
-        GameManager.instance.DeductScore(points);
+        GameManager.instance.RemoveScore(points);
 
         yield return new WaitForSeconds(delay);
 

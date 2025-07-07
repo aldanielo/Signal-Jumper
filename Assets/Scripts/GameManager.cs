@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+//using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     PlatformMover platformTyp;
     public Button restartButton;
-    public Button playButton;
+    private Button playButton;
+    public GameObject gameStartPanel;
 
     public TextMeshProUGUI scoreText;
     private int score = 0;
@@ -19,13 +21,26 @@ public class GameManager : MonoBehaviour
 
     private const string SCORE_HISTORY_KEY = "ScoreHistory";
     private const string LAST_SCORE_KEY = "LastScore";
-    private const string LAST_LEVEL_KEY = "LastLevel";
+    //private const string LAST_LEVEL_KEY = "LastLevel";
 
     public static bool isRestarted = false;
 
-    public string currentLevel;
+    //private string currentLevel;
 
+    //FinishBar Spawn
+    public float requiredTime = 60f; // Time required to play before the bar spawns
+    public int requiredScore = 100; // Score required to reach before the bar spawns
+    public GameObject bar; // The bar game object
 
+    private float startTime; // Time when the level starts
+    private float currentTime; // Current time played
+    //private int currentScore; // Current score
+
+    public GameObject gameComletePanel;
+    public GameObject gameOverPanel;
+    public PlayerController player;
+
+    
 
 
     private void Awake()
@@ -35,14 +50,12 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
 
-
-        //restartButton = GetComponent<Button>();
-        restartButton.onClick.AddListener(RestartGame);
+        //restartButton.onClick.AddListener(RestartGame);
 
         if (isRestarted)
         {
@@ -51,21 +64,32 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            score = GetLastScore(); // Load the last score
+            //score = GetLastScore(); // Load the last score
         }
         
         scoreText.text = "Score: " + score.ToString();
 
+        
+        if (isRestarted)
+        {
+            gameStartPanel.SetActive(false);
+        }
+        
     }
 
     public void Start()
     {
+        
+        //DontDestroyOnLoad (bar);
+        startTime = Time.time;
+        bar.SetActive(false); // Deactivate the bar initially
+
         if (!isRestarted)
         {
-            Time.timeScale = 0f;
+            /*Time.timeScale = 0f;
             playButton.gameObject.SetActive(true);
             restartButton.gameObject.SetActive(false);
-
+            */
        
 
             if (AudioManager.instance != null)
@@ -77,10 +101,10 @@ public class GameManager : MonoBehaviour
         else
         {
             // Game was restarted, skip play screen
-            Time.timeScale = 1f;
+           /*Time.timeScale = 1f;
             playButton.gameObject.SetActive(false);
             restartButton.gameObject.SetActive(false);
-
+            */
 
             if (AudioManager.instance != null)
             {
@@ -94,6 +118,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        currentTime = Time.time - startTime;
+
+        //check if the player has reached the require score and time
+
+        if(score >= requiredScore && currentTime >= requiredTime)
+        {
+            SpawnBar();
+        }
+
         if (scoreMultiplierTimer > 0f)
         {
             scoreMultiplierTimer -= Time.deltaTime;
@@ -106,6 +139,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        gameStartPanel.SetActive(false);
 
         Time.timeScale = 1f; // Resume game time
         playButton.gameObject.SetActive(false); // Hide Play button
@@ -120,16 +154,28 @@ public class GameManager : MonoBehaviour
     public void AddScore()
     {
         score += (int)scoreMultiplier;
-        //score += 1;
-        scoreText.text = "Score: " + score.ToString();
+        //int scoreToAdd = (int)scoreMultiplier;
+        //score += scoreToAdd;
+        //currentScore = score; // tracks players score 
+        Debug.Log(score);
+        scoreText.text = "Score: " + score.ToString(); 
+
         SaveScore(score); // Save after adding score
     }
 
     public void ResetScore()
     {
         score = 0;
+        //currentScore = 0;
         scoreText.text = "Score: " + score.ToString();
     }
+
+    private void SpawnBar()
+    {
+        bar.SetActive(true);
+        StartCoroutine(AnimateBar());
+    }
+
 
     public void GameOver()
     {
@@ -144,17 +190,18 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.Stop("Background");
             AudioManager.instance.Play("Theme");
         }
-        restartButton.gameObject.SetActive(true); // Show the restart button
+        gameOverPanel.SetActive(true); // Show the restart button
 
     }
 
-    public void RestartGame()
+   /* public void RestartGame()
     {
-        /*PlayerPrefs.SetInt("Score", 0);
-        score = 0;
-        scoreText.text = "Score: 0";
-        */
+        //PlayerPrefs.SetInt("Score", 0);
+        //score = 0;
+        //scoreText.text = "Score: " + score;
+      
 
+        
         isRestarted = true;
         Time.timeScale = 1f;
         if (AudioManager.instance != null)
@@ -162,21 +209,43 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.Stop("Theme");
             AudioManager.instance.Play("Background");
         }
+        
+        // gameStartPanel.SetActive(false);
         ResetScore();
+        startTime = Time.time;
+
+        //AddScore();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
-    }
+    }*/
 
-    public void RemoveScore()
+    public void RemoveScore(int points)
     {
         score --; // Decrease score
-        scoreText.text = "Score: " + score.ToString(); // Update score text
-        SaveScore(score); // Save after removing score
+        
 
         if (score < 0)
         {
             GameOver();
+            //gameStartPanel.SetActive(false);
+
         }
+
+        // Activates blast function
+        if (player.transform.position.y < -12)
+        {
+            score -= points;
+            if (score < 0)
+            {
+                GameOver();
+                //gameStartPanel.SetActive(false);
+
+            }
+            //scoreText.text = "Score: " + score.ToString();
+            //SaveScore(score); // Save after deduction
+        }
+        scoreText.text = "Score: " + score.ToString(); // Update score text
+        SaveScore(score); // Save after removing score
     }
 
     public void ActivateScoreMultiplier(float multiplier, float duration)
@@ -190,7 +259,7 @@ public class GameManager : MonoBehaviour
     {
         scoreMultiplier = 1;
     }
-
+    /*
     // Activates blast function
     public void DeductScore(int points)
     {
@@ -198,10 +267,13 @@ public class GameManager : MonoBehaviour
         if (score < 0)
         {
             GameOver();
+            //gameStartPanel.SetActive(false);
+
         }
         scoreText.text = "Score: " + score.ToString();
         SaveScore(score); // Save after deduction
     }
+    */
 
     // Save Last Memory
     public void SaveScore(int score)
@@ -218,11 +290,13 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /*
     public void SaveLastLevel(int level)
     {
         PlayerPrefs.SetInt(LAST_LEVEL_KEY, level);
     }
 
+    
     public string GetScoreHistory()
     {
         return PlayerPrefs.GetString(SCORE_HISTORY_KEY, "");
@@ -234,17 +308,39 @@ public class GameManager : MonoBehaviour
         return PlayerPrefs.GetInt(LAST_SCORE_KEY, 0);
     }
 
+    
     public int GetLastLevel()
     {
         return PlayerPrefs.GetInt(LAST_LEVEL_KEY, 1); // Default to level 1
     }
+    */
 
     public void LoadNextLevel()
     {
         // Load the next level
-        string nextLevel = "Level " + (int.Parse(currentLevel.Split(' ')[1]) + 1);
-        SceneManager.LoadSceneAsync(nextLevel);
-        PlayerPrefs.SetString("CurrentLevel", nextLevel);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    private IEnumerator AnimateBar()
+    {
+        float animationTime = 2f; // Animation time
+        float elapsedTime = 0f;
+        Vector3 startPosition = bar.transform.position;
+        Vector3 endPosition = new Vector3(bar.transform.position.x, -10f, bar.transform.position.z); // Adjust the end position as per your needs
+
+        while (elapsedTime < animationTime)
+        {
+            bar.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / animationTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        bar.transform.position = endPosition;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
 }
