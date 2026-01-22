@@ -68,19 +68,26 @@ public class PlayerController : MonoBehaviour
     IEnumerator ReSpawnAfterDelay(float delay)
     {
         isRespawning = true;
+
+        // Optional: hide or disable visuals
+        //GameObject model = transform.GetChild(0).gameObject;
+        //if (model != null) model.SetActive(false);
+
         // Optional: hide the ball or disable controls here
         rb.velocity = Vector3.zero;
 
-        GameManager.instance.RemoveScore(points);
+        // Save a reference before waiting
+        //GameObject thisPlayer = gameObject;
+
+        //GameManager.instance.RemoveScore(points);
 
         yield return new WaitForSeconds(delay);
 
         transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
         rb.velocity = Vector3.zero;
 
+        GameManager.instance.DeductScore(points);
         isRespawning = false;
-
-        // Optional: re-enable visuals or input here
     }
 
 }

@@ -10,6 +10,7 @@ public class PlatformMover : MonoBehaviour
     public PlatformType platformType;
     public float speed;
     private bool hasBeenHit = false;
+    private int point = 5;
 
 
     private void Update()
@@ -45,7 +46,7 @@ public class PlatformMover : MonoBehaviour
                     break;
                 case PlatformType.Danger:
                     // Apply damage or penalty
-                    GameManager.instance.RemoveScore(5);
+                    GameManager.instance.RemoveScore(point);
                     //Debug.Log("Danger platform hit!");
                     break;
             }
